@@ -39,6 +39,28 @@ struct CardView: View {
     )
   }
   
+  var darkerStrokeColor: Color {
+    let components = computedBackgroundColor.components()
+    
+    return Color(
+      hue: Double(components.hue),
+      saturation: Double(components.saturation),
+      brightness: min(1.0, Double(components.brightness) - Double(0.2)),
+      opacity: 1.0
+    )
+  }
+  
+  var lighterStrokeColor: Color {
+    let components = computedBackgroundColor.components()
+    
+    return Color(
+      hue: Double(components.hue),
+      saturation:  max(0.0, Double(components.saturation) - Double(0.25)),
+      brightness: min(1.0, Double(components.brightness) + Double(0.25)),
+      opacity: 1.0
+    )
+  }
+  
   var body: some View {
     VStack {
       ZStack {
@@ -71,12 +93,16 @@ struct CardView: View {
             RoundedRectangle(cornerRadius: corners + 2, style: .continuous)
               .fill(
                 LinearGradient(gradient: Gradient(colors: [
-                  computedBackgroundColor.opacity(0.7),
-                  lighterBackgroundColor.opacity(0.7)
+                  computedBackgroundColor,
+                  lighterBackgroundColor
                 ]), startPoint: .top, endPoint: .bottom),
-                strokeBorder: .white.opacity(0.4),
+                strokeBorder: LinearGradient(gradient: Gradient(colors: [
+                  lighterStrokeColor,
+                  darkerStrokeColor.opacity(0.33)
+                ]), startPoint: .top, endPoint: .bottom),
                 lineWidth: 2
               )
+              .opacity(0.7)
               .offset(
                 x: cardSelected ? 0 : -4,
                 y: cardSelected ? 0 : -4

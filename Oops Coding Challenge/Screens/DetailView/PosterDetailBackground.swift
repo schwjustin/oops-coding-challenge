@@ -21,13 +21,24 @@ struct PosterDetailBackground: View {
     }
   }
 
+  var darkerBackgroundColor: Color {
+    let components = computedBackgroundColor.components()
+    
+    return Color(
+      hue: Double(components.hue),
+      saturation: max(0.0, Double(components.saturation) + Double(0.3)),
+      brightness: min(1.0, Double(components.brightness) - Double(0.3)),
+      opacity: 1.0
+    )
+  }
+
   var lighterBackgroundColor: Color {
     let components = computedBackgroundColor.components()
 
     return Color(
       hue: Double(components.hue),
-      saturation: max(0.0, Double(components.saturation) - Double(0.5)),
-      brightness: min(1.0, Double(components.brightness) + Double(0.5)),
+      saturation: max(0.0, Double(components.saturation) - Double(0.3)),
+      brightness: min(1.0, Double(components.brightness) + Double(0.3)),
       opacity: 1.0
     )
   }
@@ -36,13 +47,14 @@ struct PosterDetailBackground: View {
     ZStack {
       ZStack {
         Color.white
-        
+
         // linear gradient in background
         if computedBackgroundColor != .clear {
           LinearGradient(gradient: Gradient(colors: [
-            lighterBackgroundColor.opacity(0.6),
-            computedBackgroundColor.opacity(0.6)
+            lighterBackgroundColor,
+            darkerBackgroundColor
           ]), startPoint: .top, endPoint: .bottom)
+            .opacity(0.6)
         }
       }
 
