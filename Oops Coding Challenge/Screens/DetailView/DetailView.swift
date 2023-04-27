@@ -109,6 +109,7 @@ struct DetailView: View {
                     .mask(
                       Circle()
                     )
+                    .shadow(color: .black.opacity(!interfaceViewModel.showDetail ? 0 : 0.25), radius: 30, x: 0, y: 8)
 
                   Image(systemName: "square.and.arrow.up")
                     .resizable()
